@@ -16,7 +16,7 @@ plugins {
 group = "de.siphalor.${project.name}"
 val archivesBaseName = "${project.name}-mc${properties["minecraft.version.descriptor"]}"
 val shortVersion = "${properties["version"]}"
-version = "${shortVersion}+mc${mcLibs.versions.minecraft.get()}"
+version = "${shortVersion}+mc${mcLibs.versions.minecraft.get()}-noip"
 
 license {
 	rule(file("LICENSE_HEADER"))
