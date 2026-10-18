@@ -1,11 +1,10 @@
-
 name: Build Mouse Wheelie JAR
 
 on:
   workflow_dispatch:
   push:
     branches:
-      - mc-26.3
+      - mc-26.3-noip
 
 jobs:
   build:
@@ -23,18 +22,17 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      - name: Set permissions
-        run: chmod +x ./gradlew ./helpers/run-each-mc.sh
-
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build mod
-        run: ./helpers/run-each-mc.sh ./gradlew build
+      - name: Build Minecraft 26.3 only
+        run: ./gradlew build
 
-      - name: Upload JAR files
+      - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
           name: mouse-wheelie-mc-26.3
-          path: '**/build/libs/*.jar'
+          path: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar
           if-no-files-found: error
