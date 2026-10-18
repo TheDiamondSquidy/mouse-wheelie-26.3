@@ -1,0 +1,40 @@
+
+name: Build Mouse Wheelie JAR
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - mc-26.3
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v5
+        with:
+          submodules: true
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Set permissions
+        run: chmod +x ./gradlew ./helpers/run-each-mc.sh
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build mod
+        run: ./helpers/run-each-mc.sh ./gradlew build
+
+      - name: Upload JAR files
+        uses: actions/upload-artifact@v4
+        with:
+          name: mouse-wheelie-mc-26.3
+          path: '**/build/libs/*.jar'
+          if-no-files-found: error
